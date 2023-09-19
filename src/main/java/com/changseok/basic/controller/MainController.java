@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.changseok.basic.dto.response.PatchNicknameResponseDto;
+import com.changseok.basic.dto.request.PatchNicknameRequestDto;
 import com.changseok.basic.dto.request.PatchValidationDto;
 import com.changseok.basic.dto.request.PostRequestBodyDto;
 import com.changseok.basic.dto.request.PostUserRequestDto;
@@ -32,12 +34,13 @@ import lombok.RequiredArgsConstructor;
 // description: Response Body의 타입이 JSON 형태의 데이터를 반환 //
 @RestController
 // description: @RequestMapping - Request의 URL 패턴에 따라 클래스 및 메소드를 결정하는 어노테이션 //
-@RequestMapping("/")    // http://localhost:4000/**
-// @RequestMapping("/main")   ex) http://localhost:4000/main/**
+@RequestMapping("/") // http://localhost:4000/**
+// @RequestMapping("/main") ex) http://localhost:4000/main/**
 @RequiredArgsConstructor
 public class MainController {
 
-    // description: @Autowired - Java bean으로 등록되어 있는 클래스에 대해서 제어의 역전을 통해 의존성을 주입하는 어노테이션 //
+    // description: @Autowired - Java bean으로 등록되어 있는 클래스에 대해서 제어의 역전을 통해 의존성을 주입하는
+    // 어노테이션 //
     // @Autowired
     // description: IoC를 통해서 DI 하는 방법 //
     // description: 1. 멤버변수를 사용한 DI //
@@ -48,11 +51,12 @@ public class MainController {
     // description: 생성자를 사용한 DI에서는 @Autowired를 사용하지 않아도 됨 //
 
     // description: 아래 방법은 생성자를 사용한 IoC를 통한 DI이며 final로 지정하여 필수 멤버 변수로 지정 함 //
-    // description: lombok 라이브러리의 @RequiredArgsConstructor를 사용하여 필수 멤버 변수의 생성자를 만듦 //
+    // description: lombok 라이브러리의 @RequiredArgsConstructor를 사용하여 필수 멤버 변수의 생성자를 만듦
+    // //
     private final MainService mainService;
 
     // http://localhost:4000/hello GET
-    @RequestMapping(value="hello", method = {RequestMethod.POST})
+    @RequestMapping(value = "hello", method = { RequestMethod.POST })
     public String hello() {
         return "Hello Spring framework!!";
     }
@@ -101,8 +105,7 @@ public class MainController {
     // description: {변수명}로 표현 -> @PathVariable("변수명")로 받음 //
     @GetMapping("path-variable/{variable}")
     public String getPathVariable(
-        @PathVariable("variable") String variable
-    ) {
+            @PathVariable("variable") String variable) {
         return "Parameter value : " + variable;
     }
 
@@ -111,9 +114,8 @@ public class MainController {
     // description: @RequestParam("name1") -> name1에 대한 value1를 받음 //
     @GetMapping("parameter")
     public String getParameter(
-        @RequestParam("name") String name,
-        @RequestParam("age") Integer age
-    ) {
+            @RequestParam("name") String name,
+            @RequestParam("age") Integer age) {
         return "name " + name + ", age: " + age;
     }
 
@@ -121,17 +123,15 @@ public class MainController {
     // description: 문자열 혹은 객체로 받을 수 있음 //
     @PostMapping("request-body")
     public String postRequestBody(
-        // @RequestBody String requestBody
-        @RequestBody PostRequestBodyDto requestBody
-    ){
+            // @RequestBody String requestBody
+            @RequestBody PostRequestBodyDto requestBody) {
         return "Request의 Body는 " + requestBody.getName() + " " + requestBody.getAge() + "입니다.";
     }
 
     @PatchMapping("validation")
     public String validation(
-        // description: DTO에 작성된 유효성 검사를 적용하려 한다면 @Valid 를 매개변수 자리에 추가해줘야 함 //
-        @RequestBody @Valid PatchValidationDto requestBody
-    ) {
+            // description: DTO에 작성된 유효성 검사를 적용하려 한다면 @Valid 를 매개변수 자리에 추가해줘야 함 //
+            @RequestBody @Valid PatchValidationDto requestBody) {
         return requestBody.getArg1();
     }
 
@@ -143,10 +143,15 @@ public class MainController {
 
     @PostMapping("user")
     public ResponseEntity<? super PostUserResponseDto> postUser(
-        @RequestBody @Valid PostUserRequestDto requestBody
-    ) {
+            @RequestBody @Valid PostUserRequestDto requestBody) {
         ResponseEntity<? super PostUserResponseDto> response = mainService.postUser(requestBody);
         return response;
     }
 
+    @PatchMapping("nickname")
+    public ResponseEntity<? super PatchNicknameResponseDto> patchNickname(
+            @RequestBody @Valid PatchNicknameRequestDto requestBody) {
+        ResponseEntity<? super PatchNicknameResponseDto> response = mainService.patchNickname(requestBody);
+        return response;
+    }
 }
