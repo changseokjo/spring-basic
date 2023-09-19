@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.changseok.basic.dto.response.DeleteUserResponseDto;
 import com.changseok.basic.dto.response.PatchNicknameResponseDto;
 import com.changseok.basic.dto.request.PatchNicknameRequestDto;
 import com.changseok.basic.dto.request.PatchValidationDto;
@@ -154,4 +155,13 @@ public class MainController {
         ResponseEntity<? super PatchNicknameResponseDto> response = mainService.patchNickname(requestBody);
         return response;
     }
+
+    @DeleteMapping("user/{email}")
+    public ResponseEntity<? super DeleteUserResponseDto> deleteUser(
+        @PathVariable("email") String email
+    ){
+        ResponseEntity<? super DeleteUserResponseDto> response = mainService.deleteUser(email);
+        return response;
+    }
+
 }
